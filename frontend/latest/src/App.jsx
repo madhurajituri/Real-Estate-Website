@@ -3,9 +3,12 @@ import Navbar from './components/Navbar.jsx'
 import { Routes, BrowserRouter, Route, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Home from './routes/Home.jsx'
 import Listpage from './routes/Listpage.jsx'
-import Layout from './routes/Layout.jsx'
+import {Layout ,  RequireAuth } from './routes/Layout.jsx'
 import Singlepage from './routes/Singlepage.jsx'
 import ProfilePage from './routes/ProfilePage.jsx'
+import Signup from './routes/Signup.jsx'
+import Signin from './routes/Signin.jsx'
+import UpdateProfile from './routes/UpdateProfile.jsx'
 
 function App() {
   const router = createBrowserRouter([
@@ -26,10 +29,28 @@ function App() {
           element:<Singlepage/>
         },
         {
-          path:"/profile",
-          element:<ProfilePage/>
+          path:"/signup",
+          element:<Signup/>
+        },
+        {
+          path:"/signin",
+          element:<Signin/>
         }
       ]
+    },
+    {
+      path:"/",
+      element:<RequireAuth/>,
+      children:[
+        {
+          path:"/profile",
+          element:<ProfilePage/>
+        },
+        {
+          path:"/profile/update",
+          element:<UpdateProfile/>
+        }
+      ],
     }
   ])  
   return (

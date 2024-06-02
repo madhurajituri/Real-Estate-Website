@@ -21,4 +21,36 @@ model User {
   password  String
   profile   String? //maybe empty
   createdAt DateTime @default(now())
+  posts Post[]
+}
+
+model Post {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  price Int
+  image String
+  address String
+  city String
+  bedroom Int
+  bathroom Int
+  latitude String
+  longitude String
+  createdAt DateTime @default(now())
+  type Type
+  property Property
+  user User @relation(fields : [userID] , references :[id])
+  userID String @db.ObjectId
+
+}
+
+enum Type{
+  buy
+  rent
+}
+
+enum Property{
+  apartment
+  house
+  condo
+  land
 }

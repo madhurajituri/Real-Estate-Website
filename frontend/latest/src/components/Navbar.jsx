@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { createContext, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import logo from "../../public/logo.jpg"
-import { userData } from '../lib/dummydata';
-
+import { AuthContext } from '../context/AuthContext.jsx';
+import noAvatar from '../../public/noAvatar.png'
 function Navbar() {
-    const user = true;
-    const john = userData;
+
+    const {currentuser} = useContext(AuthContext);
+    console.log(currentuser);
+
     return (
         <div className='w-[1220px] py-3 px-10 z-10 bg-zinc-800 text-white flex justify-center items-center'>
             <nav className='flex justify-between w-full items-center font-bold'>
@@ -19,11 +21,11 @@ function Navbar() {
                     <Link to="/contact" className='hover:scale-[1.2] transition-all'>Contact</Link>
                     <Link to="/agents" className='hover:scale-[1.2] transition-all'>Agents</Link>
                 </div>
-                {user ? (
+                {currentuser ? (
                     <div className="flex gap-8 items-center justify-center">
                         <div className='flex gap-2 justify-center items-center'>
-                            <img src={john.img} className='object-cover w-10 h-10 rounded-full object-center'></img>
-                            <div className='text-md font-bold'>{john.name}</div>
+                            <img src={currentuser.profile || noAvatar} className='object-cover w-10 h-10 rounded-full object-center'></img>
+                            <div className='text-md font-bold text-white capitalize'>{currentuser.username}</div>
                         </div>
                         <Link to="/profile" className='hover:scale-[1.2] transition-all'>
                             <div className='bg-green-200 relative text-black hover:bg-green-300 items-center text-center p-2 rounded-md'>

@@ -94,8 +94,8 @@ function Chat() {
                 </div>
                 <div className="bottom w-full bg-green-200 rounded-b-md border-2 h-10 justify-between gap-3 py-1 px-2 flex">
                     <input value={message} onChange={(e)=>setmessage(e.target.value)} className='w-full h-full rounded-lg' type="text"></input>
-                    <div className='bg-yellow-100 text-sm cursor-pointer text-black hover:bg-green-300 items-center text-center p-2 rounded-md'>
-                        <div>Send</div>
+                    <div className='bg-green-200 text-sm cursor-pointer hover:bg-green-300 p-1 rounded-md px-3'>
+                        Send
                     </div>
                 </div>
             </div>}
