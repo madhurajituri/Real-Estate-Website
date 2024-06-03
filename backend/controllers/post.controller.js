@@ -15,7 +15,16 @@ export const getpost = async (req,res) => {
     const id = req.params.id;
     try{
         const post = await prisma.post.findUnique({
-            where: {id}
+            where: {id},
+            include:{
+                postDetail:true,
+                user:{
+                    select:{
+                        username:true,
+                        profile:true
+                    }
+                }
+            }
         });
         res.status(200).json(post);
     }catch(err){
@@ -43,8 +52,11 @@ export const createpost = async (req,res) => {
     try{
         const createpost = await prisma.post.create({
             data:{
-                ...body,
-                userID : tokenUserId
+                ...body.postData,
+                userID : tokenUserId,
+                postDetail:{
+                    create:body.postDetail
+                }
             }
         })
         res.status(200).json(createpost);

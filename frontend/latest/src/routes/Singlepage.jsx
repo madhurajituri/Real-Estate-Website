@@ -11,15 +11,19 @@ import size from '../../public/size.png'
 import school from '../../public/school.png'
 import { MdOutlineBathroom, MdOutlineBed, MdOutlineSave } from 'react-icons/md';
 import Map from '../components/Map.jsx'
+import { useLoaderData } from 'react-router-dom';
+import dompurify from 'dompurify';
 
 function Singlepage() {
 
-    const post = singlePostData;
+    // const post = singlePostData;
     const user = userData;
+    const post = useLoaderData();
+    console.log(post);
 
     return (
         <div className='flex w-full h-full '>
-            <div className='w-2/3 h-full bg-green-50 pt-16'>
+            <div className='w-2/3 h-full bg-green-50 pt-32 min-h-screen -mt-16'>
                 <div className='p-10 w-full h-full flex flex-col gap-5'>
                     <div className='w-full h-full'>
                         <Slider images={post.images} />
@@ -34,11 +38,11 @@ function Singlepage() {
                             <div className='p-2 bg-green-200 rounded-sm w-fit h-fit'>${post.price}</div>
                         </div>
                         <div className='w-24 h-24 bg-yellow-100 rounded-xl flex flex-col gap-1 items-center justify-center'>
-                            <img className="w-16 h-16 rounded-full object-cover" src={user.img} />
-                            <div className='font-semibold text-xs'>{user.name}</div>
+                            <img className="w-16 h-16 rounded-full object-cover" src={post.user.profile} />
+                            <div className='font-semibold text-xs'>{post.user.username}</div>
                         </div>
                     </div>
-                    <div className='text-sm'>{post.description}</div>
+                    <div className='text-sm' dangerouslySetInnerHTML={{__html: dompurify.sanitize(post.postDetail.desc)}}></div>
                 </div>
             </div>
             <div className='bg-[#a9c09e] w-1/3 p-4'>
@@ -50,21 +54,21 @@ function Singlepage() {
                                 <img src={utilities} className='w-8 h-8'></img>
                                 <div>
                                     <div className='font-semibold'>Utilities</div>
-                                    <div className="text-xs">Renter is responsible</div>
+                                    <div className="text-xs capitalize">{post.postDetail.utilities} is responsible</div>
                                 </div>
                             </div>
                             <div className="flex gap-2 border-[1px] border-gray-400 bg-yellow-50 rounded-2xl p-1">
                                 <img src={pet} className='w-8 h-8'></img>
                                 <div>
                                     <div className='font-semibold'>Pet Policy</div>
-                                    <div className="text-xs">Pets allowed</div>
+                                    <div className="text-xs capitalize">{post.postDetail.petPolicy}</div>
                                 </div>
                             </div>
                             <div className="flex gap-2 border-[1px] border-gray-400 bg-yellow-50 rounded-2xl p-1">
-                                <img src={utilities} className='w-8 h-8'></img>
+                                <img src={fee} className='w-8 h-8'></img>
                                 <div>
                                     <div className='font-semibold'>Property Fees</div>
-                                    <div className="text-xs">Must have 3x the rent in total household income</div>
+                                    <div className="text-xs">{post.postDetail.propertyFees}</div>
                                 </div>
                             </div>
                         </div>
@@ -74,15 +78,15 @@ function Singlepage() {
                         <div className='flex justify-between items-center text-xs'>
                             <div className="flex gap-2 border-[1px] border-gray-400 bg-yellow-50 rounded-2xl p-2">
                                 <img src={size} className='w-4 h-4' />
-                                <div>80 sqm (861 sqft)</div>
+                                <div>{post.postDetail.size} sqm ({post.postDetail.size*12} sqft)</div>
                             </div>
                             <div className="flex gap-2 border-[1px] border-gray-400 bg-yellow-50 rounded-2xl p-2">
                                 <MdOutlineBed className='w-4 h-4' />
-                                <div>2 Bed</div>
+                                <div>{post.bedroom} Bed</div>
                             </div>
                             <div className="flex gap-2 border-[1px] border-gray-400 bg-yellow-50 rounded-2xl p-2">
                                 <MdOutlineBathroom className='w-4 h-4' />
-                                <div>1 Bathroom</div>
+                                <div>{post.bathroom} Bathroom</div>
                             </div>
                         </div>
                     </div>
@@ -93,21 +97,21 @@ function Singlepage() {
                                 <img src={restaurant} className='w-4 h-4'></img>
                                 <div>
                                     <div className='font-semibold'>Restaurant</div>
-                                    <div className="text-xs">250m away</div>
+                                    <div className="text-xs">{post.postDetail.restaurant}m away</div>
                                 </div>
                             </div>
                             <div className="flex gap-2 items-center justify-center rounded-2xl p-1">
                                 <img src={school} className='w-4 h-4'></img>
                                 <div>
                                     <div className='font-semibold'>School</div>
-                                    <div className="text-xs">180m away</div>
+                                    <div className="text-xs">{post.postDetail.school}m away</div>
                                 </div>
                             </div>
                             <div className="flex gap-2 items-center justify-center rounded-2xl p-1">
                                 <img src={bus} className='w-4 h-4'></img>
                                 <div>
                                     <div className='font-semibold'>Bus Stop</div>
-                                    <div className="text-xs">150m away</div>
+                                    <div className="text-xs">{post.postDetail.bus}m away</div>
                                 </div>
                             </div>
                         </div>

@@ -14,21 +14,12 @@ datasource db {
 }
 
 //@id defines unique id 
-model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId //connects mongodb _id to id using map
-  email     String   @unique
-  username  String   @unique
-  password  String
-  profile   String? //maybe empty
-  createdAt DateTime @default(now())
-  posts Post[]
-}
 
 model Post {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   title String
   price Int
-  image String
+  images String[]
   address String
   city String
   bedroom Int
@@ -40,7 +31,7 @@ model Post {
   property Property
   user User @relation(fields : [userID] , references :[id])
   userID String @db.ObjectId
-
+  postDetail PostDetail?
 }
 
 enum Type{
@@ -53,4 +44,28 @@ enum Property{
   house
   condo
   land
+}
+
+model PostDetail{
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    desc String
+    utilities String?
+    petPolicy String?
+    propertyFees String?
+    size Int?
+    school Int?
+    bus Int?
+    restaurant Int?
+    post Post @relation(fields: [postID] , references: [id])
+    postID String @db.ObjectId @unique
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId //connects mongodb _id to id using map
+  email     String   @unique
+  username  String   @unique
+  password  String
+  profile   String? //maybe empty
+  createdAt DateTime @default(now())
+  posts Post[]
 }

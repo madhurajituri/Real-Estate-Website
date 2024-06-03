@@ -10,7 +10,9 @@ function Map({ items }) {
     return (
         <div className='w-full h-full flex items-center justify-center pt-20'>
 
-            <MapContainer center={[51.505, -0.09]} zoom={7} scrollWheelZoom={false} className='w-[90%] h-[90%] rounded-lg'>
+            <MapContainer center={
+                items.length === 1 ? [items[0].latitude , items[0].longitude] : [51.505, -0.09]
+            } zoom={7} scrollWheelZoom={false} className='w-[90%] h-[90%] rounded-lg'>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

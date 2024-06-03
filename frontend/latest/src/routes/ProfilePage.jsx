@@ -56,7 +56,7 @@ function ProfilePage() {
                     <div className='justify-between flex items-center'>
                         <div className='text-lg font-semibold'>My List</div>
                         <div className='bg-green-200 text-sm cursor-pointer font-semibold text-black hover:bg-green-300 items-center text-center p-2 rounded-md'>
-                            <div>Add New Post</div>
+                            <Link to="/profile/createpost"><div>Add New Post</div></Link>
                         </div>
                     </div>
                     {cards.map((item, index) => (

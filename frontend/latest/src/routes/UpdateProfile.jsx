@@ -9,7 +9,7 @@ function UpdateProfile() {
 
     const { currentuser, updateuser } = useContext(AuthContext);
     const [error, seterror] = useState("");
-    const [avatar, setavatar] = useState(currentuser.profile);
+    const [avatar, setavatar] = useState([]);
     const navigate = useNavigate();
 
     const handlesubmit = async (e) => {
@@ -20,7 +20,7 @@ function UpdateProfile() {
         try {
             // console.log(currentuser.id)
             const res = await apirequest.put(`/user/${currentuser.id}`, {
-                username, email, password ,profile:avatar
+                username, email, password ,profile:avatar[0]
             });
             // console.log(res.data)
             updateuser(res.data);
@@ -62,14 +62,14 @@ function UpdateProfile() {
                 </div>
             </div>
             <div className='w-1/3 bg-[#a9c09e] flex items-center justify-center flex-col gap-3'>
-                <img src={avatar || noAvatar} className='rounded-full w-56 h-56'></img>
+                <img src={avatar[0] || currentuser.profile || noAvatar} className='rounded-full w-56 h-56'></img>
                 <UploadWidget uwConfig={{
                     cloudName:"madhurajituri",
                     uploadPreset:"estate",
                     multiple:false,
                     maxImageFileSize:2000000 //2MB
                 }}
-                setavatar={setavatar}
+                setState={setavatar}
                 />
             </div>
         </div>
