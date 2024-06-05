@@ -10,7 +10,7 @@ function Card({ item }) {
     return (
         <div className='flex gap-10 text-sm w-full'>
             <Link to={`/${item.id}`}>
-                <img src={item.images} className=' shadow-black shadow-md w-96 h-36 rounded-md' />
+                <img src={item.images[0]} className=' shadow-black shadow-md w-72 h-36 rounded-md' />
             </Link>
             <div className='w-full flex flex-col gap-4'>
                 <Link to={`/${item.id}`} className='font-bold text-green-800'>{item.title}</Link>

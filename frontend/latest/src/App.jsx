@@ -10,7 +10,7 @@ import Signup from './routes/Signup.jsx'
 import Signin from './routes/Signin.jsx'
 import UpdateProfile from './routes/UpdateProfile.jsx'
 import CreatePost from './routes/CreatePost.jsx'
-import { singlePostLoader } from './lib/loaders.js'
+import { listPageLoader, singlePostLoader } from './lib/loaders.js'
 
 function App() {
   const router = createBrowserRouter([
@@ -24,12 +24,13 @@ function App() {
         },
         {
           path:"/listpage",
-          element:<Listpage/>
+          element:<Listpage/>,
+          loader: listPageLoader,
         },
         {
           path:"/:id",
           element:<Singlepage/>,
-          loader:singlePostLoader
+          loader:singlePostLoader,
         },
         {
           path:"/signup",

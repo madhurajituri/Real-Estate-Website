@@ -6,9 +6,9 @@ import { AuthContext } from '../context/AuthContext'
 
 function Home() {
 
-    const {currentuser} = useContext(AuthContext);
-    console.log(currentuser);
-    
+    // const {currentuser} = useContext(AuthContext);
+    // console.log(currentuser);
+
     return (
         <div className='h-screen -mt-16 flex w-full'>
             <div className='h-full w-2/3 px-10 flex justify-center bg-green-50 flex-col gap-10'>

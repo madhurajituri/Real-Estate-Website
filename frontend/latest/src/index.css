@@ -19,11 +19,11 @@ body{
 }
 
 .non-active{
-  @apply w-20 h-10 bg-white border-2 flex items-center px-2
+  @apply w-20 h-10 bg-white border-2 flex items-center px-2 cursor-pointer capitalize
 }
 
 .active{
-  @apply w-20 h-10 bg-black border-2 flex items-center px-2 text-white
+  @apply w-20 h-10 bg-black border-2 flex items-center px-2 text-white cursor-pointer capitalize
 }
 
 .overflowscroll{
