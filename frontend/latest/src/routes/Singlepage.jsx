@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import Slider from '../components/Slider.jsx'
-import { userData, singlePostData } from '../lib/dummydata'
+// import { userData, singlePostData } from '../lib/dummydata'
 import { MdLocationOn, MdOutlineChat } from 'react-icons/md';
 import utilities from '../../public/utility.png'
 import pet from '../../public/pet.png'
@@ -11,15 +11,34 @@ import size from '../../public/size.png'
 import school from '../../public/school.png'
 import { MdOutlineBathroom, MdOutlineBed, MdOutlineSave } from 'react-icons/md';
 import Map from '../components/Map.jsx'
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import dompurify from 'dompurify';
+import { AuthContext } from '../context/AuthContext.jsx';
+import apirequest from '../lib/apirequest.js';
 
 function Singlepage() {
 
     // const post = singlePostData;
-    const user = userData;
+    // const user = userData;
     const post = useLoaderData();
-    console.log(post);
+    const currentuser = useContext(AuthContext);
+    const [saved , setsaved] = useState(post.isSaved);
+    // console.log(post);
+    
+    const handleSave = async () => {
+        if(!currentuser){
+            const navigate = useNavigate();
+            navigate("/signin");
+        }
+        setsaved((prev)=>!prev);
+        try{
+            const saved = await apirequest.post("/user/save" , {postID:post.id});
+        }
+        catch(err){
+            setsaved((prev)=>!prev);
+            console.log(err);
+        }
+    }
 
     return (
         <div className='flex w-full h-full '>
@@ -127,9 +146,9 @@ function Singlepage() {
                             <MdOutlineChat className='w-5 h-5 text-green-700' />
                             <div>Send a Message</div>
                         </div>
-                        <div className='bg-yellow-100 rounded-md cursor-pointer flex p-2 gap-2 justify-between items-center hover:bg-yellow-200'>
+                        <div onClick={handleSave} className='bg-yellow-100 rounded-md cursor-pointer flex p-2 gap-2 justify-between items-center hover:bg-yellow-200'>
                             <MdOutlineSave className='w-5 h-5 text-green-700' />
-                            <div>Save a Location</div>
+                            <div>{saved? "Place Saved":"Save the Place"}</div>
                         </div>
                     </div>
                 </div>

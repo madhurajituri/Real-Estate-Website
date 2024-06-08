@@ -48,11 +48,11 @@ export const updateUser = async (req, res) => {
             data: {
                 ...body,
                 ...(updatedPass && { password: updatedPass }),
-                ...(profile && {profile}),
+                ...(profile && { profile }),
             }
         })
 
-        const {password:userPassword , ...rest} = updatedUser;
+        const { password: userPassword, ...rest } = updatedUser;
         res.status(200).json(rest);
     } catch (err) {
         console.log(err);
@@ -77,4 +77,75 @@ export const deleteUser = async (req, res) => {
         console.log(err);
         res.status(500).json("Failed to delete user!");
     }
+}
+
+
+export const savePost = async (req, res) => {
+    const postId = req.body.postID;
+    const tokenUserId = req.userID;
+
+    try {
+
+        const savedPost = await prisma.savedPost.findUnique({
+            where: {
+                userID_postID:{
+
+                    userID: tokenUserId,
+                    postID: postId
+                }
+            }
+        })
+
+        if (savedPost) {
+            await prisma.savedPost.delete({
+                where: {
+                    id: savedPost.id
+                }
+            })
+            res.status(200).json("Post removed from saved list!")
+        }
+        else {
+            await prisma.savedPost.create({
+                data: {
+                    userID: tokenUserId,
+                    postID: postId
+                }
+            })
+            res.status(200).json("Post saved!")
+        }
+
+
+    } catch (err) {
+        res.status(500).json("Failed to save post!");
+        console.log(err);
+    }
+}
+
+
+export const profilePosts = async (req, res) => {
+    const tokenUserId = req.params.userID;
+
+    try {
+
+        const allPosts = await prisma.post.findMany({
+            where: {
+                userID: tokenUserId
+            }
+        })
+        const savedPosts = await prisma.savedPost.findMany({
+            where: {
+                userID: tokenUserId,
+            },
+            include: {
+                post: true,
+            },
+        })
+    const saved = savedPosts.map(item => item.post);
+
+    res.status(200).json({ allPosts, saved });
+}
+    catch (err) {
+    console.log(err);
+    res.status(500).json("Failed to get user posts!");
+}
 }

@@ -1,15 +1,17 @@
-import React, { useContext, useEffect } from 'react'
+import React, { Suspense, useContext, useEffect } from 'react'
 import { listData, userData } from '../lib/dummydata'
 import Card from '../components/Card';
 import Chat from '../components/Chat';
 import apirequest from '../lib/apirequest.js';
-import { Link, useNavigate } from 'react-router-dom';
+import { Await, Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext.jsx';
 import noAvatar from '../../public/noAvatar.png'
+import List from '../components/List.jsx';
 
 function ProfilePage() {
-    const cards = listData;
+    // const cards = listData;
     const navigate = useNavigate();
+    const data = useLoaderData();
 
     const { currentuser, updateuser } = useContext(AuthContext);
 
@@ -24,7 +26,7 @@ function ProfilePage() {
     }
 
     return (
-       <div className='w-full h-full flex'>
+        <div className='w-full h-full flex'>
             <div className='details w-2/3 h-screen overflow-y-scroll -mt-16  bg-green-50 p-10 pt-24 flex flex-col gap-6'>
                 <div className='flex justify-between items-center w-full'>
                     <div className='text-3xl font-bold'>User Information</div>
@@ -59,13 +61,49 @@ function ProfilePage() {
                             <Link to="/profile/createpost"><div>Add New Post</div></Link>
                         </div>
                     </div>
-                    {cards.map((item, index) => (
-                        <Card item={item} key={index} />
-                    ))}
+                    <div className='font-semibold text-3xl my-4'>All Posts</div>
+                    <Suspense fallback={<p>Loading...</p>}>
+                        <Await
+                            resolve={data.postResponse}
+                            errorElement={
+                                <p>Error loading posts!</p>
+                            }
+                        >
+                            {(postResponse) => (
+                                // console.log(postResponse)
+                                <List posts={postResponse.data.allPosts} />
+                            )}
+                        </Await>
+                    </Suspense>
+                    <div className='font-semibold text-3xl my-4'>Saved Posts</div>
+                    <Suspense fallback={<p>Loading...</p>}>
+                        <Await
+                            resolve={data.postResponse}
+                            errorElement={
+                                <p>Error loading posts!</p>
+                            }
+                        >
+                            {(postResponse) => (
+                                // console.log(postResponse)
+                                <List posts={postResponse.data.saved} />
+                            )}
+                        </Await>
+                    </Suspense>
                 </div>
             </div>
             <div className='message bg-[#a9c09e] -mt-16 w-1/3 p-10 pt-24 h-screen'>
-                <Chat />
+                <Suspense fallback={<p>Loading...</p>}>
+                    <Await
+                        resolve={data.chatResponse}
+                        errorElement={
+                            <p>Error loading chats!</p>
+                        }
+                    >
+                        {(chatResponse) => (
+                            <Chat chats={chatResponse.data}/>
+                        )}
+                    </Await>
+                </Suspense>
             </div>
         </div>
     )

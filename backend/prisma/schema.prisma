@@ -62,14 +62,16 @@ model PostDetail {
 }
 
 model User {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId //connects mongodb _id to id using map
-  email     String     @unique
-  username  String     @unique
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId //connects mongodb _id to id using map
+  email     String      @unique
+  username  String      @unique
   password  String
   profile   String? //maybe empty
-  createdAt DateTime   @default(now())
+  createdAt DateTime    @default(now())
   posts     Post[]
   savedPost SavedPost[]
+  chatIDs   String[]    @db.ObjectId
+  chats     Chat[]      @relation(fields: [chatIDs], references: [id])
 }
 
 model SavedPost {
@@ -80,5 +82,24 @@ model SavedPost {
   userID    String   @unique @db.ObjectId
   createdAt DateTime @default(now())
 
-  @@unique([postID , userID]) //cannot save same post again and again by same user
+  @@unique([userID, postID]) //cannot save same post again and again by same user
+}
+
+model Chat {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId //connects mongodb _id to id using map
+  createdAt DateTime  @default(now())
+  userIDs   String[]  @db.ObjectId
+  users     User[]    @relation(fields: [userIDs], references: [id])
+  seenBy    String[]  @db.ObjectId
+  messages  Message[]
+  lastMessage String?
+}
+
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId //connects mongodb _id to id using map
+  createdAt DateTime @default(now())
+  text      String
+  userID    String
+  chat      Chat     @relation(fields: [chatID], references: [id])
+  chatID    String   @db.ObjectId
 }

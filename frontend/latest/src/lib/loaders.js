@@ -16,3 +16,12 @@ export const listPageLoader = async ({ request, params }) => {
     })
 };
 
+export const profilePageLoader = async () => {
+    const postPromise = apirequest.get("/user/profilePosts");
+    const chatPromise = apirequest.get("/chat");
+    return defer({
+        postResponse : postPromise,
+        chatResponse : chatPromise,
+    })
+};
+

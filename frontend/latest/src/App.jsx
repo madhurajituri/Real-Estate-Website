@@ -10,7 +10,7 @@ import Signup from './routes/Signup.jsx'
 import Signin from './routes/Signin.jsx'
 import UpdateProfile from './routes/UpdateProfile.jsx'
 import CreatePost from './routes/CreatePost.jsx'
-import { listPageLoader, singlePostLoader } from './lib/loaders.js'
+import { listPageLoader, profilePageLoader, singlePostLoader } from './lib/loaders.js'
 
 function App() {
   const router = createBrowserRouter([
@@ -48,7 +48,8 @@ function App() {
       children:[
         {
           path:"/profile",
-          element:<ProfilePage/>
+          element:<ProfilePage/>,
+          loader:profilePageLoader
         },
         {
           path:"/profile/update",
