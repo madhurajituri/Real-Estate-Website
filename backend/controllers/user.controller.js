@@ -149,3 +149,27 @@ export const profilePosts = async (req, res) => {
     res.status(500).json("Failed to get user posts!");
 }
 }
+
+
+export const getNotification = async (req, res) =>{
+    const tokenUserId = req.userID;
+    try{
+        const unreadChats = await prisma.chat.count({
+            where:{
+                userIDs:{
+                    hasSome: [tokenUserId]
+                },
+                NOT:{
+                    seenBy:{
+                        hasSome: [tokenUserId]
+                    }
+                }
+            }
+        })
+        res.status(200).json(unreadChats);
+    }
+    catch(err){
+        res.status(500).json("Failed to get notification number");
+        console.log(err);
+    }
+}

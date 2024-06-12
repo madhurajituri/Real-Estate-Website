@@ -3,10 +3,17 @@ import { Link } from 'react-router-dom'
 import logo from "../../public/logo.jpg"
 import { AuthContext } from '../context/AuthContext.jsx';
 import noAvatar from '../../public/noAvatar.png'
+import { useNotificationStore } from '../lib/notification.js';
 function Navbar() {
 
     const {currentuser} = useContext(AuthContext);
-    console.log(currentuser);
+    // console.log(currentuser);
+
+    const fetch = useNotificationStore(state => state.fetch);
+    const number = useNotificationStore(state => state.number);
+
+    if(currentuser) fetch();
+
 
     return (
         <div className='w-[1220px] py-3 px-10 z-10 bg-zinc-800 text-white flex justify-center items-center'>
@@ -30,7 +37,7 @@ function Navbar() {
                         <Link to="/profile" className='hover:scale-[1.2] transition-all'>
                             <div className='bg-green-200 relative text-black hover:bg-green-300 items-center text-center p-2 rounded-md'>
                                 <div>Profile</div>
-                                <div className='bg-red-500 z-100 rounded-full w-4 h-4 text-xs text-white absolute top-0 right-0 translate-x-[20%] -translate-y-[20%]'>3</div>
+                                {number > 0 && <div className='bg-red-500 z-100 rounded-full w-4 h-4 text-xs text-white absolute top-0 right-0 translate-x-[20%] -translate-y-[20%]'>{number}</div>}
                             </div>
                         </Link>
                     </div>
