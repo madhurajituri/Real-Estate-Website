@@ -43,7 +43,7 @@ npm start
 # Start the frontend
 cd ../client
 npm start
-Open the application in your browser at http://localhost:3000/.
+
 
 ✨ Future Enhancements
 🔸 Adding a payment gateway for secure transactions.
